@@ -65,10 +65,10 @@
 
     let svg = d3.select("body").select("svg")
 
-    d3.json('county-topo-6.json').then(function(data){
+    d3.json('county-topo-7.json').then(function(data){
         // console.log({ data })
-        let counties = topojson.feature(data, data.objects.county);
-        let states = topojson.feature(data, data.objects.state);
+        let counties = topojson.feature(data, data.objects.county)
+        let states = topojson.feature(data, data.objects.state)
         console.log(counties)
 
         let Projection = d3.geoIdentity()
@@ -78,8 +78,7 @@
         let path = d3.geoPath()
             .projection(Projection)
 
-
-            svg.append("g")
+        svg.append("g")
             .attr("class", "states")
             .selectAll(".states")
             .data(states.features)
@@ -93,8 +92,9 @@
             // .attr("class", "states")
             .selectAll(".circles")
             .data(counties.features.filter(d <= d.geometry != null).sort((a, b) => d3.descending(a.propierties.pop_18_in_poverty, b.propierties.pop_18_in_poverty)))
+            .data(counties.features)
             .join("circle")
-            .attr("class", function (d) { return "circles p-" + d.propierties.GEOID }) //callback to access the data, position according to x axis
+            .attr("class", function (d) { return "circles p-" + d.propierties.GEOID }) 
             .attr("cy", function (d) { return y(d[sel_var_state]) })
             .attr("r", function (d) { return r(d.totavg) })
             .style("stroke", "#333333")
@@ -107,8 +107,8 @@
 
         let popup = d3.select(".popup")
 
-            circles.on("mouseover", (pointer_event, d) => {
-                svg.select(".p-" + d.propierties.GEOID)
+        circles.on("mouseover", (pointer_event, d) => {
+            svg.select(".p-" + d.propierties.GEOID)
                 .style("stroke", "#333333")
                 .style("stroke-width", .5)
                 .style("fill", "#c0cad8")
@@ -123,8 +123,8 @@
 
 })
 
-            circles.on("mouseout", (pointer_event, d) => {
-                svg.select(".p-" + d.propierties.GEOID)
+        circles.on("mouseout", (pointer_event, d) => {
+            svg.select(".p-" + d.propierties.GEOID)
                 .style("stroke", "#333333")
                 .style("stroke-width", .5)
                 .style("fill", "#c0cad8")
